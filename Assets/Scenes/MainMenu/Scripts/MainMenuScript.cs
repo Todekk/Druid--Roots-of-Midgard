@@ -14,27 +14,38 @@ public class MainMenuScript : MonoBehaviour
     public GameObject selectLevelScreen;
     public bool isInMainMenu = true;
 
+    public AudioSource buttonClickedSound;
+
     public void Play()
     {
+        buttonClickedSound.Play();
         SceneManager.LoadScene("TutorialLevel");
     }
 
     public void SelectLevel(Button button)
     {
+        buttonClickedSound.Play();
         UnhighlightButtonText(button, "Select Level Text");
         SelectLevelScreenToggle();
     }
 
-    public void Quit() => Application.Quit();
+    public void Quit()
+    {
+        buttonClickedSound.Play();
+        Application.Quit();
+    } 
 
     public void BackToMainMenu(Button button)
     {
+        buttonClickedSound.Play();
         UnhighlightButtonText(button, "Back Text");
         SelectLevelScreenToggle();
     }
 
     public void GoToLevel(Button button)
     {
+        buttonClickedSound.Play();
+
         string buttonText = button.GetComponentInChildren<TextMeshProUGUI>().text;
 
         string levelSceneName = null;
