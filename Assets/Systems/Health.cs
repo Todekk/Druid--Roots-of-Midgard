@@ -18,6 +18,13 @@ public class Health : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
+    private void Update()
+    {
+        if(currentHealth>maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+    }
 
     public void TakeDamage(int damage)
     {

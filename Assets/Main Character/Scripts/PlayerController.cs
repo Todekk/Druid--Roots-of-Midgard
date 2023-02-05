@@ -4,6 +4,25 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
+
+    //ULTIMATE
+    
+    public bool canUlt = true;
+    public bool isUlting = false;
+    public float ultTime = 2f;
+    public float ultCooldown = 58f;
+    [System.Serializable]
+    public struct Root
+    {
+        public Animator rootAnim;
+        public BoxCollider2D rootCollider;
+    }
+
+    [Header("Root")]
+    public Root[] roots;
+    //Scale
+    [SerializeField]
+    private float scaleX = 1f;
     //Movement
     private float horizontal;
     public float speed = 8f;
@@ -18,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     //Animator
     private Animator anim;
+    public Animator auraAnim;   
 
     //Attack
     public GameObject attackArea = default;
@@ -30,6 +50,7 @@ public class PlayerController : MonoBehaviour
     private bool blocking = false;
     private float timeToBlock = 0.25f;
     private float blockTimer = 0f;
+
 
     //Heal
     private bool canHeal = true;
@@ -52,11 +73,31 @@ public class PlayerController : MonoBehaviour
     {
         if (isHealing)
         {
+            rb.velocity = new Vector2(0, rb.velocity.y);
             return;
         }
         if (isDashing)
         {
             return;
+        }
+        if (isUlting)
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            return;
+        }
+        if (rb.velocity.x < 0)
+        {
+            Transform transform = GetComponent<Transform>();
+            Vector3 newScale = transform.localScale;
+            newScale.x = -1f;
+            transform.localScale = newScale;
+        }
+        if (rb.velocity.x > 0)
+        {
+            Transform transform = GetComponent<Transform>();
+            Vector3 newScale = transform.localScale;
+            newScale.x = 1f;
+            transform.localScale = newScale;
         }
         //Movement
         horizontal = Input.GetAxisRaw("Horizontal");
@@ -84,6 +125,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha4) && canUlt)
+        {
+            StartCoroutine(Ultimate());
         }
 
         //Movement - Dash
@@ -143,6 +188,10 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        if(isUlting)
+        {
+            return;
+        }
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
     }
 
@@ -193,11 +242,34 @@ public class PlayerController : MonoBehaviour
         canHeal = false;
         isHealing = true;
         anim.SetBool("isHealing", true);
+        auraAnim.SetBool("isHealing", true);
         yield return new WaitForSeconds(healingTime);
         isHealing = false;
         anim.SetBool("isHealing", false);
+        auraAnim.SetBool("isHealing", false);
         yield return new WaitForSeconds(healingCooldown);
         canHeal = true;
 
+    }
+    private IEnumerator Ultimate()
+    {
+        canUlt = false;
+        isUlting = true;
+        anim.SetBool("isUlting", true);
+        foreach (Root root in roots)
+        {
+            root.rootAnim.SetBool("isUlting", true);
+            root.rootCollider.enabled = true;
+        }
+        yield return new WaitForSeconds(ultTime);
+        isUlting = false;
+        anim.SetBool("isUlting", false);
+        foreach (Root root in roots)
+        {
+            root.rootAnim.SetBool("isUlting", false);
+            root.rootCollider.enabled = false;
+        }
+        yield return new WaitForSeconds(ultCooldown);
+        canUlt = true;
     }
 }
