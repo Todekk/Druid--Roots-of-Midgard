@@ -6,6 +6,7 @@ public class ForestCleanse : MonoBehaviour
 {
     public GameObject corruptForest;
     public GameObject cleansedForest;
+    public SpriteRenderer shrine;
     public GameObject grass;
     public GameObject portal;
     private bool playerInZone;
@@ -20,6 +21,7 @@ public class ForestCleanse : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3) && playerInZone)
         {
             corruptForest.SetActive(false);
+            shrine.enabled = false;
             cleansedForest.SetActive(true);
             grass.SetActive(true);
             portal.SetActive(true);

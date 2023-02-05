@@ -14,7 +14,7 @@ public class LevelTransition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha3) && playerInZone)
+        if (Input.GetKeyDown(KeyCode.E) && playerInZone)
         {
             SceneManager.LoadScene(sceneName);
         }

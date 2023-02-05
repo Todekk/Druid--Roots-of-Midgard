@@ -9,6 +9,9 @@ public class PhaseChange : MonoBehaviour
     private bool isWaving;
     private float waveTime = 150f;
     private float wavesCooldown = 50000f;
+    public Health health;
+    public GameObject bossEnemy;
+    public GameObject finalPhase;
     [System.Serializable]
     public struct Ability
     {
@@ -27,6 +30,11 @@ public class PhaseChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (health.currentHealth <= 0)
+        {
+            finalPhase.SetActive(false);
+            bossEnemy.SetActive(false);
+        }
         if (isWaving)
         {
             return;
@@ -35,6 +43,7 @@ public class PhaseChange : MonoBehaviour
         {
             StartCoroutine(Phase());
         }
+        
     }
     private IEnumerator Phase()
     {

@@ -20,6 +20,10 @@ public class Health : MonoBehaviour
     }
     private void Update()
     {
+        if(currentHealth <0)
+        {
+            currentHealth = 0;
+        }
         if(currentHealth>maxHealth)
         {
             currentHealth = maxHealth;
