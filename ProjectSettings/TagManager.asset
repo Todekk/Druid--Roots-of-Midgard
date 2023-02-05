@@ -8,7 +8,6 @@ TagManager:
   - ManaSprite
   - HealthSprite
   - Ground
-  - Teleporter
   layers:
   - Default
   - TransparentFX
