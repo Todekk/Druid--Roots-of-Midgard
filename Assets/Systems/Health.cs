@@ -22,17 +22,20 @@ public class Health : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-
+        
         if (currentHealth <= 0)
         {
             Die();
         }
+        else
+            anim.SetTrigger("hurt");
     }
 
     private void Die()
     {
         //GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<BoxCollider2D>().enabled = false;
+        anim.SetTrigger("die");
         anim.SetBool("isDead", true);
         Debug.Log(gameObject.name + " has died.");
     }
