@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MenuButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MenuButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     public TextMeshProUGUI text;
     public AudioSource clickSound;
@@ -16,12 +16,39 @@ public class MenuButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExi
             hoverSound.Play();
         }
 
-        text.color = Color.black;
+        if (text is not null)
+        {
+            text.color = new Color(66f / 255f, 69f / 255f, 33f / 255f);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         hoverSound.Stop();
-        text.color = Color.white;
+
+        if (text is not null)
+        {
+            SetDefaultMenuButtonTextColor();
+        }
     }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (text is not null)
+        {
+            text.color = Color.black;
+        }
+
+        clickSound.Play();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (text is not null)
+        {
+            SetDefaultMenuButtonTextColor();
+        }
+    }
+
+    private void SetDefaultMenuButtonTextColor() => text.color = new Color(235f / 255f, 235f / 255f, 235f / 255f);
 }
