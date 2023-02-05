@@ -10,8 +10,9 @@ using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
-    public GameObject mainMenu;
+    public GameObject mainMenuScreen;
     public GameObject selectLevelScreen;
+    public GameObject controlsScreen;
     public bool isInMainMenu = true;
 
     public AudioSource buttonClickedSound;
@@ -26,7 +27,14 @@ public class MainMenuScript : MonoBehaviour
     {
         buttonClickedSound.Play();
         UnhighlightButtonText(button, "Select Level Text");
-        SelectLevelScreenToggle();
+        MenuScreenToggle(this.selectLevelScreen);
+    }
+
+    public void ViewControls(Button button)
+    {
+        buttonClickedSound.Play();
+        UnhighlightButtonText(button, "Controls Text");
+        MenuScreenToggle(this.controlsScreen);
     }
 
     public void Quit()
@@ -39,7 +47,15 @@ public class MainMenuScript : MonoBehaviour
     {
         buttonClickedSound.Play();
         UnhighlightButtonText(button, "Back Text");
-        SelectLevelScreenToggle();
+
+        if (selectLevelScreen.activeSelf)
+        {
+            MenuScreenToggle(this.selectLevelScreen);
+        }
+        else if (controlsScreen.activeSelf)
+        {
+            MenuScreenToggle(this.controlsScreen);
+        }
     }
 
     public void GoToLevel(Button button)
@@ -77,11 +93,11 @@ public class MainMenuScript : MonoBehaviour
         }
     }
 
-    private void SelectLevelScreenToggle()
+    private void MenuScreenToggle(GameObject screen)
     {
         isInMainMenu = !isInMainMenu;
-        mainMenu.SetActive(isInMainMenu);
-        selectLevelScreen.SetActive(!isInMainMenu);
+        mainMenuScreen.SetActive(isInMainMenu);
+        screen.SetActive(!isInMainMenu);
     }
 
     private void UnhighlightButtonText(Button button, string buttonText)
