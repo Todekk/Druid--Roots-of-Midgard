@@ -65,99 +65,105 @@ public class AnimalFormController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        anim.SetLayerWeight(0, 0);
-        anim.SetLayerWeight(1, 1);
-        //Movement
-        horizontal = Input.GetAxisRaw("Horizontal");
-        if (isDashing)
+        if (!PauseMenuScript.isPaused)
         {
-            return;
-        }
-        if (rb.velocity.x < 0)
-        {
-            Transform transform = GetComponent<Transform>();
-            Vector3 newScale = transform.localScale;
-            newScale.x = -1f;
-            transform.localScale = newScale;
-        }
-        if (rb.velocity.x > 0)
-        {
-            Transform transform = GetComponent<Transform>();
-            Vector3 newScale = transform.localScale;
-            newScale.x = 1f;
-            transform.localScale = newScale;
-        }
-        if (horizontal != 0)
-        {
-            anim.SetBool("isRunning", true);
-        }
-        if (horizontal == 0 && VB == false && FB == false)
-        {
-            anim.SetBool("isRunning", false);
-        }
-        //Movement - Jump
-        if (Input.GetButtonDown("Jump") && IsGrounded())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-        }
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-        }
-        //Movement - Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
-        {
-            StartCoroutine(Dash());
-        }
-        //Attacking
-        //Vicious Bite
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            ViciousBite();
-        }
-        if (VB)
-        {
-            vBTimer += Time.deltaTime;
-            if (vBTimer >= timeToVB)
+            anim.SetLayerWeight(0, 0);
+            anim.SetLayerWeight(1, 1);
+            //Movement
+            horizontal = Input.GetAxisRaw("Horizontal");
+            if (isDashing)
             {
-                vBTimer = 0;
-                VB = false;
-                vBArea.SetActive(VB);
-                anim.SetBool("ViciousBite", false);
+                return;
             }
-        }
-        //Ferocious Bite
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            FerociousBite();
-        }
-        if (FB)
-        {
-            fBTimer += Time.deltaTime;
-            if (fBTimer >= timeToFB)
+            if (rb.velocity.x < 0)
             {
-                fBTimer = 0;
-                FB = false;
-                fBArea.SetActive(FB);
-                anim.SetBool("FerociousBite", false);
-                anim.SetBool("isAnimal", true);
+                Transform transform = GetComponent<Transform>();
+                Vector3 newScale = transform.localScale;
+                newScale.x = -1f;
+                transform.localScale = newScale;
             }
-        }
-        if(Input.GetKeyDown(KeyCode.Alpha2)&&canHeal)
-        {
-            StartCoroutine(Heal());
-        }
+            if (rb.velocity.x > 0)
+            {
+                Transform transform = GetComponent<Transform>();
+                Vector3 newScale = transform.localScale;
+                newScale.x = 1f;
+                transform.localScale = newScale;
+            }
+            if (horizontal != 0)
+            {
+                anim.SetBool("isRunning", true);
+            }
+            if (horizontal == 0 && VB == false && FB == false)
+            {
+                anim.SetBool("isRunning", false);
+            }
+            //Movement - Jump
+            if (Input.GetButtonDown("Jump") && IsGrounded())
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            }
+            if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            }
+            //Movement - Dash
+            if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+            {
+                StartCoroutine(Dash());
+            }
+            //Attacking
+            //Vicious Bite
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                ViciousBite();
+            }
+            if (VB)
+            {
+                vBTimer += Time.deltaTime;
+                if (vBTimer >= timeToVB)
+                {
+                    vBTimer = 0;
+                    VB = false;
+                    vBArea.SetActive(VB);
+                    anim.SetBool("ViciousBite", false);
+                }
+            }
+            //Ferocious Bite
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                FerociousBite();
+            }
+            if (FB)
+            {
+                fBTimer += Time.deltaTime;
+                if (fBTimer >= timeToFB)
+                {
+                    fBTimer = 0;
+                    FB = false;
+                    fBArea.SetActive(FB);
+                    anim.SetBool("FerociousBite", false);
+                    anim.SetBool("isAnimal", true);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2) && canHeal)
+            {
+                StartCoroutine(Heal());
+            }
 
 
-        Flip();
+            Flip();
+        }
     }
     private void FixedUpdate()
     {
-        if (isDashing)
+        if (!PauseMenuScript.isPaused)
         {
-            return;
+            if (isDashing)
+            {
+                return;
+            }
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
         }
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
     }
     private void ViciousBite()
     {

@@ -71,128 +71,134 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (isHealing)
+        if (!PauseMenuScript.isPaused)
         {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            return;
-        }
-        if (isDashing)
-        {
-            return;
-        }
-        if (isUlting)
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            return;
-        }
-        if (rb.velocity.x < 0)
-        {
-            Transform transform = GetComponent<Transform>();
-            Vector3 newScale = transform.localScale;
-            newScale.x = -1f;
-            transform.localScale = newScale;
-        }
-        if (rb.velocity.x > 0)
-        {
-            Transform transform = GetComponent<Transform>();
-            Vector3 newScale = transform.localScale;
-            newScale.x = 1f;
-            transform.localScale = newScale;
-        }
-        //Movement
-        horizontal = Input.GetAxisRaw("Horizontal");
-
-        if (horizontal != 0)
-        {
-            anim.SetBool("isMoving", true);
-        }
-        if (horizontal == 0)
-        {
-            anim.SetBool("isMoving", false);
-        }
-
-        //Movement - Jump
-        if (Input.GetButtonDown("Jump") && IsGrounded())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-            anim.SetBool("isJumping", true);
-        }
-        if (IsGrounded() && rb.velocity.y == 0)
-        {
-            anim.SetBool("isJumping", false);
-        }
-
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-        }
-        if(Input.GetKeyDown(KeyCode.Alpha4) && canUlt)
-        {
-            StartCoroutine(Ultimate());
-        }
-
-        //Movement - Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
-        {
-            StartCoroutine(Dash());
-        }
-        //Healing (Forest)
-        if (Input.GetKeyDown(KeyCode.Alpha3) && canHeal)
-        {
-            StartCoroutine(Heal());
-
-        }
-        //Block
-        if (Input.GetKeyDown(KeyCode.Alpha2) && IsGrounded())
-        {
-            Block();
-        }
-        if (blocking)
-        {
-            blockTimer += Time.deltaTime;
-            if (blockTimer >= timeToBlock)
+            if (isHealing)
             {
-                blockTimer = 0;
-                blocking = false;
-                blockArea.SetActive(blocking);
-                anim.SetBool("isBlocking", false);
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                return;
             }
-        }
-
-        //Attacking
-        if (Input.GetKeyDown(KeyCode.Alpha1) && IsGrounded())
-        {
-            Attack();
-        }
-        if (attacking)
-        {
-            timer += Time.deltaTime;
-            if (timer >= timeToAttack)
+            if (isDashing)
             {
-                timer = 0;
-                attacking = false;
-                attackArea.SetActive(attacking);
-                anim.SetBool("isMeleeAttacking", false);
+                return;
             }
+            if (isUlting)
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                return;
+            }
+            if (rb.velocity.x < 0)
+            {
+                Transform transform = GetComponent<Transform>();
+                Vector3 newScale = transform.localScale;
+                newScale.x = -1f;
+                transform.localScale = newScale;
+            }
+            if (rb.velocity.x > 0)
+            {
+                Transform transform = GetComponent<Transform>();
+                Vector3 newScale = transform.localScale;
+                newScale.x = 1f;
+                transform.localScale = newScale;
+            }
+            //Movement
+            horizontal = Input.GetAxisRaw("Horizontal");
+
+            if (horizontal != 0)
+            {
+                anim.SetBool("isMoving", true);
+            }
+            if (horizontal == 0)
+            {
+                anim.SetBool("isMoving", false);
+            }
+
+            //Movement - Jump
+            if (Input.GetButtonDown("Jump") && IsGrounded())
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+                anim.SetBool("isJumping", true);
+            }
+            if (IsGrounded() && rb.velocity.y == 0)
+            {
+                anim.SetBool("isJumping", false);
+            }
+
+            if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4) && canUlt)
+            {
+                StartCoroutine(Ultimate());
+            }
+
+            //Movement - Dash
+            if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+            {
+                StartCoroutine(Dash());
+            }
+            //Healing (Forest)
+            if (Input.GetKeyDown(KeyCode.Alpha3) && canHeal)
+            {
+                StartCoroutine(Heal());
+
+            }
+            //Block
+            if (Input.GetKeyDown(KeyCode.Alpha2) && IsGrounded())
+            {
+                Block();
+            }
+            if (blocking)
+            {
+                blockTimer += Time.deltaTime;
+                if (blockTimer >= timeToBlock)
+                {
+                    blockTimer = 0;
+                    blocking = false;
+                    blockArea.SetActive(blocking);
+                    anim.SetBool("isBlocking", false);
+                }
+            }
+
+            //Attacking
+            if (Input.GetKeyDown(KeyCode.Alpha1) && IsGrounded())
+            {
+                Attack();
+            }
+            if (attacking)
+            {
+                timer += Time.deltaTime;
+                if (timer >= timeToAttack)
+                {
+                    timer = 0;
+                    attacking = false;
+                    attackArea.SetActive(attacking);
+                    anim.SetBool("isMeleeAttacking", false);
+                }
+            }
+            Flip();
         }
-        Flip();
     }
 
     private void FixedUpdate()
     {
-        if (isDashing)
+        if (!PauseMenuScript.isPaused)
         {
-            return;
-        }
-        if (isHealing)
-        {
-            return;
-        }
-        if(isUlting)
-        {
-            return;
-        }
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+            if (isDashing)
+            {
+                return;
+            }
+            if (isHealing)
+            {
+                return;
+            }
+            if (isUlting)
+            {
+                return;
+            }
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        }    
     }
 
     private bool IsGrounded()

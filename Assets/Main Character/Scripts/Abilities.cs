@@ -30,24 +30,27 @@ public class Abilities : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < abilities.Length; i++)
+        if (!PauseMenuScript.isPaused)
         {
-            Ability ability = abilities[i];
-            if (Input.GetKeyDown(ability.keyCode) && ability.isCooldown == false)
+            for (int i = 0; i < abilities.Length; i++)
             {
-                ability.isCooldown = true;
-                ability.abilityImage.fillAmount = 1;
-            }
-            if (ability.isCooldown)
-            {
-                ability.abilityImage.fillAmount -= 1 / ability.cooldown * Time.deltaTime;
-                if (ability.abilityImage.fillAmount <= 0)
+                Ability ability = abilities[i];
+                if (Input.GetKeyDown(ability.keyCode) && ability.isCooldown == false)
                 {
-                    ability.abilityImage.fillAmount = 0;
-                    ability.isCooldown = false;
+                    ability.isCooldown = true;
+                    ability.abilityImage.fillAmount = 1;
                 }
+                if (ability.isCooldown)
+                {
+                    ability.abilityImage.fillAmount -= 1 / ability.cooldown * Time.deltaTime;
+                    if (ability.abilityImage.fillAmount <= 0)
+                    {
+                        ability.abilityImage.fillAmount = 0;
+                        ability.isCooldown = false;
+                    }
+                }
+                abilities[i] = ability;
             }
-            abilities[i] = ability;
         }
     }
 }

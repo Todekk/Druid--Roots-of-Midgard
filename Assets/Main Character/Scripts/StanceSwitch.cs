@@ -30,10 +30,13 @@ public class StanceSwitch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Transform
-        if (Input.GetKeyDown(KeyCode.Alpha5) && canSwitch)
+        if (!PauseMenuScript.isPaused)
         {
-            StartCoroutine(Transform());
+            //Transform
+            if (Input.GetKeyDown(KeyCode.Alpha5) && canSwitch)
+            {
+                StartCoroutine(Transform());
+            }
         }
     }
     private void FixedUpdate()
