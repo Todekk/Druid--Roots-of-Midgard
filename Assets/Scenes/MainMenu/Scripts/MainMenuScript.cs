@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
 using TMPro;
 
 using UnityEngine;
@@ -15,39 +11,16 @@ public class MainMenuScript : MonoBehaviour
     public GameObject controlsScreen;
     public bool isInMainMenu = true;
 
-    public AudioSource buttonClickedSound;
+    public void Play() => SceneManager.LoadScene("TutorialLevel");
 
-    public void Play()
-    {
-        buttonClickedSound.Play();
-        SceneManager.LoadScene("TutorialLevel");
-    }
+    public void SelectLevel(Button button) => MenuScreenToggle(this.selectLevelScreen);
 
-    public void SelectLevel(Button button)
-    {
-        buttonClickedSound.Play();
-        UnhighlightButtonText(button, "Select Level Text");
-        MenuScreenToggle(this.selectLevelScreen);
-    }
+    public void ViewControls(Button button) => MenuScreenToggle(this.controlsScreen);
 
-    public void ViewControls(Button button)
-    {
-        buttonClickedSound.Play();
-        UnhighlightButtonText(button, "Controls Text");
-        MenuScreenToggle(this.controlsScreen);
-    }
-
-    public void Quit()
-    {
-        buttonClickedSound.Play();
-        Application.Quit();
-    } 
+    public void Quit() => Application.Quit();
 
     public void BackToMainMenu(Button button)
     {
-        buttonClickedSound.Play();
-        UnhighlightButtonText(button, "Back Text");
-
         if (selectLevelScreen.activeSelf)
         {
             MenuScreenToggle(this.selectLevelScreen);
@@ -60,8 +33,6 @@ public class MainMenuScript : MonoBehaviour
 
     public void GoToLevel(Button button)
     {
-        buttonClickedSound.Play();
-
         string buttonText = button.GetComponentInChildren<TextMeshProUGUI>().text;
 
         string levelSceneName = null;
@@ -98,11 +69,5 @@ public class MainMenuScript : MonoBehaviour
         isInMainMenu = !isInMainMenu;
         mainMenuScreen.SetActive(isInMainMenu);
         screen.SetActive(!isInMainMenu);
-    }
-
-    private void UnhighlightButtonText(Button button, string buttonText)
-    {
-        TextMeshProUGUI text = button.GetComponentsInChildren<TextMeshProUGUI>().FirstOrDefault(o => o.name == buttonText);
-        text.color = Color.white;
     }
 }
