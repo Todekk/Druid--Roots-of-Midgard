@@ -30634,10 +30634,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pause Menu Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 3449434377347295164, guid: 3a9cab31543388645ae3943430a6b15b, type: 3}
-      propertyPath: m_SortingOrder
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a9cab31543388645ae3943430a6b15b, type: 3}
 --- !u!1 &1140486545
