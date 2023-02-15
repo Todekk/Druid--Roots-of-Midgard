@@ -16,19 +16,19 @@ public class PauseMenuScript : MonoBehaviour
 
     public static bool isPaused = false;
 
-    public void Resume() => PauseToggle();
+    public void Resume() => PauseToggle(true);
 
-    public void ViewControls() => ControlsScreenToggle(true);
+    public void ViewControls() => ControlsScreenToggle(true, true);
 
     public void BackToMainMenu() => SceneManager.LoadScene("MainMenu");
 
     public void Quit() => Application.Quit();
 
-    public void BackToPauseMenu() => ControlsScreenToggle(false);
+    public void BackToPauseMenu() => ControlsScreenToggle(false, true);
 
-    private void ControlsScreenToggle(bool isActive)
+    private void ControlsScreenToggle(bool isActive, bool isMouseClick)
     {
-        if (!isActive)
+        if (!isActive && !isMouseClick)
         {
             SimulateMouseClickOnMenuButton(controlsScreenBackButton);
         }
@@ -50,21 +50,21 @@ public class PauseMenuScript : MonoBehaviour
         {
             if (controlsScreen.activeSelf)
             {
-                ControlsScreenToggle(false);
+                ControlsScreenToggle(false, false);
             }
             else
             {
-                PauseToggle();
+                PauseToggle(false);
             }
         }
     }
 
-    private void PauseToggle()
+    private void PauseToggle(bool isMouseClick)
     {
         Time.timeScale = Convert.ToSingle(isPaused);
         isPaused = !isPaused;
 
-        if (pauseMenu.activeSelf)
+        if (pauseMenu.activeSelf && !isMouseClick)
         {
             SimulateMouseClickOnMenuButton(resumeButton);
         }
