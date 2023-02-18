@@ -3716,6 +3716,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7a2e3c8468074f44b11565b84b659ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resumeButton: {fileID: 3449434378102832198}
+  controlsButton: {fileID: 3449434378064191244}
+  quitButton: {fileID: 3449434377333041569}
+  controlsScreenBackButton: {fileID: 3449434376647866929}
+  selectedButton: {fileID: 0}
   pauseMenu: {fileID: 3449434376630511357}
   menuOptions: {fileID: 3449434376601595941}
   controlsScreen: {fileID: 3449434377414912811}
