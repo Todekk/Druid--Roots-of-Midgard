@@ -25,11 +25,11 @@ public class MenuButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDow
                 bool isInMainMenuScene = SceneManager.GetActiveScene().name == "MainMenu";
                 if (isInMainMenuScene)
                 {
-                    SelectButtonInMenu(MainMenuScript.mainMenuButtons, MainMenuScript.selectedMainMenuButtonNode);
+                    SelectButtonInMenu(MainMenuScript.mainMenuButtons, ref MainMenuScript.selectedMainMenuButtonNode);
                 }
                 else
                 {
-                    SelectButtonInMenu(PauseMenuScript.pauseMenuButtons, PauseMenuScript.selectedButtonNode);
+                    SelectButtonInMenu(PauseMenuScript.pauseMenuButtons, ref PauseMenuScript.selectedButtonNode);
                 }
                 break;
 
@@ -198,7 +198,7 @@ public class MenuButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerDow
         }
     }
 
-    private void SelectButtonInMenu(LinkedList<Button> menuButtons, LinkedListNode<Button> selectedButtonNode)
+    private void SelectButtonInMenu(LinkedList<Button> menuButtons, ref LinkedListNode<Button> selectedButtonNode)
     {
         UnhoverAllButtons(menuButtons);
         selectedButtonNode = menuButtons.Find(this.GetComponent<Button>());
