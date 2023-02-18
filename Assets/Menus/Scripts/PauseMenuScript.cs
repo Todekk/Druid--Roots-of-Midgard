@@ -65,6 +65,7 @@ public class PauseMenuScript : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                MenuButtonScript.UnhoverSelectedButton();
                 PauseToggle(false);
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -95,14 +96,12 @@ public class PauseMenuScript : MonoBehaviour
                 this.ClickSelectedButton();
 
                 MenuButtonScript.selectedButton = selectedButtonNode.Value;
-                Debug.Log(selectedButtonNode.Value.name);
             }
         }
         else
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-
                 PauseToggle(false);
             }
         }
@@ -121,6 +120,8 @@ public class PauseMenuScript : MonoBehaviour
         pauseMenu.SetActive(isPaused);
         if (pauseMenu.activeSelf)
         {
+            selectedButtonNode = pauseMenuButtons.First;
+            MenuButtonScript.selectedButton = selectedButtonNode.Value;
             MenuButtonScript.HoverSelectedButton();
         }
     }
