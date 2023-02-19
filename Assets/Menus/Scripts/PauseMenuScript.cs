@@ -9,10 +9,11 @@ public class PauseMenuScript : MonoBehaviour
 {
     public static bool isPaused = false;
 
-    public static LinkedList<Button> pauseMenuButtons = new LinkedList<Button>();
+    public static LinkedList<Button> pauseMenuButtons;
     public static LinkedListNode<Button> selectedButtonNode;
 
     public Button resumeButton;
+    public Button mainMenuButton;
     public Button controlsButton;
     public Button quitButton;
     public Button controlsScreenBackButton;
@@ -23,7 +24,12 @@ public class PauseMenuScript : MonoBehaviour
 
     public void ViewControls() => ControlsScreenToggle(true);
 
-    public void BackToMainMenu() => SceneManager.LoadScene("MainMenu");
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+        isPaused = false;
+        Time.timeScale = 1.0f;
+    }
 
     public void Quit() => Application.Quit();
 
@@ -41,11 +47,13 @@ public class PauseMenuScript : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
-        pauseMenuButtons.AddLast(resumeButton);
-        pauseMenuButtons.AddLast(controlsButton);
-        pauseMenuButtons.AddLast(quitButton);
+        pauseMenuButtons = new LinkedList<Button>();
+        pauseMenuButtons.AddLast(this.resumeButton);
+        pauseMenuButtons.AddLast(this.mainMenuButton);
+        pauseMenuButtons.AddLast(this.controlsButton);
+        pauseMenuButtons.AddLast(this.quitButton);
 
         selectedButtonNode = pauseMenuButtons.First;
         MenuButtonScript.selectedButton = selectedButtonNode.Value;
@@ -130,6 +138,10 @@ public class PauseMenuScript : MonoBehaviour
         {
             case "Resume Button":
                 this.PauseToggle();
+                break;
+
+            case "Main Menu Button":
+                this.BackToMainMenu();
                 break;
 
             case "Controls Button":

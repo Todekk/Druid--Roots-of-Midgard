@@ -11,9 +11,9 @@ public class MainMenuScript : MonoBehaviour
     private bool hasOpenedSelectLevelScreen = false;
 
     public static Button selectLevelScreenBackButtonStatic;
-    public static LinkedList<Button> mainMenuButtons = new LinkedList<Button>();
+    public static LinkedList<Button> mainMenuButtons;
 
-    public static LinkedList<Button> levelButtons = new LinkedList<Button>();
+    public static LinkedList<Button> levelButtons;
 
     public static LinkedListNode<Button> selectedMainMenuButtonNode;
     public static LinkedListNode<Button> selectedLevelButtonNode;
@@ -104,21 +104,22 @@ public class MainMenuScript : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
+        mainMenuButtons = new LinkedList<Button>();
         mainMenuButtons.AddLast(this.playButton);
         mainMenuButtons.AddLast(this.selectLevelButton);
         mainMenuButtons.AddLast(this.controlsButton);
         mainMenuButtons.AddLast(this.quitButton);
         selectedMainMenuButtonNode = mainMenuButtons.First;
+        
         MenuButtonScript.selectedButton = selectedMainMenuButtonNode.Value;
-
         MenuButtonScript.HoverSelectedButton();
 
+        levelButtons = new LinkedList<Button>();
         levelButtons.AddLast(this.tutorialLevelButton);
         levelButtons.AddLast(this.levelOneButton);
         levelButtons.AddLast(this.levelTwoButton);
-
         selectLevelScreenBackButtonStatic = selectLevelScreenBackButton;
     }
 
