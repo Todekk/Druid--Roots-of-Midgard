@@ -1732,7 +1732,7 @@ MonoBehaviour:
       - m_Target: {fileID: 3449434377347295154}
         m_TargetAssemblyTypeName: PauseMenuScript, Assembly-CSharp
         m_MethodName: BackToPauseMenu
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3720,7 +3720,6 @@ MonoBehaviour:
   controlsButton: {fileID: 3449434378064191244}
   quitButton: {fileID: 3449434377333041569}
   controlsScreenBackButton: {fileID: 3449434376647866929}
-  selectedButton: {fileID: 0}
   pauseMenu: {fileID: 3449434376630511357}
   menuOptions: {fileID: 3449434376601595941}
   controlsScreen: {fileID: 3449434377414912811}
@@ -5121,7 +5120,7 @@ MonoBehaviour:
       - m_Target: {fileID: 3449434377347295154}
         m_TargetAssemblyTypeName: PauseMenuScript, Assembly-CSharp
         m_MethodName: ViewControls
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5349,7 +5348,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3449434377347295154}
         m_TargetAssemblyTypeName: PauseMenuScript, Assembly-CSharp
-        m_MethodName: Resume
+        m_MethodName: PauseToggle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

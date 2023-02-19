@@ -21,27 +21,20 @@ public class PauseMenuScript : MonoBehaviour
     public GameObject menuOptions;
     public GameObject controlsScreen;
 
-    public void Resume() => PauseToggle(true);
-
-    public void ViewControls() => ControlsScreenToggle(true, true);
+    public void ViewControls() => ControlsScreenToggle(true);
 
     public void BackToMainMenu() => SceneManager.LoadScene("MainMenu");
 
     public void Quit() => Application.Quit();
 
-    public void BackToPauseMenu() => ControlsScreenToggle(false, true);
+    public void BackToPauseMenu() => ControlsScreenToggle(false);
 
-    private void ControlsScreenToggle(bool isActive, bool isMouseClick)
+    private void ControlsScreenToggle(bool isActive)
     {
-        if (!isActive && !isMouseClick)
-        {
-            MenuButtonScript.SimulateMouseClickOnMenuButton(controlsScreenBackButton);
-        }
-
         menuOptions.SetActive(!isActive);
         controlsScreen.SetActive(isActive);
 
-        if (menuOptions.activeSelf)
+        if (this.menuOptions.activeSelf)
         {
             MenuButtonScript.selectedButton = selectedButtonNode.Value;
             MenuButtonScript.HoverSelectedButton();
@@ -61,63 +54,60 @@ public class PauseMenuScript : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (this.menuOptions.activeSelf)
+        if (this.pauseMenu.activeSelf)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (this.menuOptions.activeSelf)
             {
-                MenuButtonScript.UnhoverSelectedButton();
-                PauseToggle(false);
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    MenuButtonScript.UnhoverSelectedButton();
+                    PauseToggle();
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    this.SelectNextButton();
+                }
+                else if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    this.SelectPreviousButton();
+                }
+                else if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    this.ClickSelectedButton();
+                }
             }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            else if (this.controlsScreen.activeSelf)
             {
-                this.SelectNextButton();
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                this.SelectPreviousButton();
-            }
-            else if (Input.GetKeyDown(KeyCode.Return)) // Return = Enter
-            {
-                this.ClickSelectedButton();
-            }
-        }
-        else if (this.controlsScreen.activeSelf)
-        {
-            if (MenuButtonScript.selectedButton != controlsScreenBackButton)
-            {
-                MenuButtonScript.selectedButton = controlsScreenBackButton;
-                MenuButtonScript.HoverSelectedButton();
+                if (MenuButtonScript.selectedButton != controlsScreenBackButton)
+                {
+                    MenuButtonScript.selectedButton = controlsScreenBackButton;
+                    MenuButtonScript.HoverSelectedButton();
 
-                return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Escape))
-            {
-                this.ClickSelectedButton();
-
-                MenuButtonScript.selectedButton = selectedButtonNode.Value;
+                    return;
+                }
+                
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Escape))
+                {
+                    this.ClickSelectedButton();
+                }
             }
         }
         else
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                PauseToggle(false);
+                PauseToggle();
             }
         }
     }
 
-    private void PauseToggle(bool isMouseClick)
+    public void PauseToggle()
     {
         Time.timeScale = Convert.ToSingle(isPaused);
         isPaused = !isPaused;
 
-        if (pauseMenu.activeSelf && !isMouseClick)
-        {
-            MenuButtonScript.SimulateMouseClickOnMenuButton(resumeButton);
-        }
-
         pauseMenu.SetActive(isPaused);
+
         if (pauseMenu.activeSelf)
         {
             selectedButtonNode = pauseMenuButtons.First;
@@ -139,7 +129,7 @@ public class PauseMenuScript : MonoBehaviour
         switch (MenuButtonScript.selectedButton.name)
         {
             case "Resume Button":
-                this.Resume();
+                this.PauseToggle();
                 break;
 
             case "Controls Button":
@@ -151,7 +141,7 @@ public class PauseMenuScript : MonoBehaviour
                 break;
 
             case "Back Button":
-                BackToPauseMenu();
+                this.BackToPauseMenu();
                 break;
         }
     }
